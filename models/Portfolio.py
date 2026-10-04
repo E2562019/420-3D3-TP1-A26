@@ -1,6 +1,5 @@
-import yfinance as yf
 from models.sujet import Sujet
-
+import yfinance as yf
 
 class Portfolio(Sujet):
     def __init__(self):
@@ -21,10 +20,13 @@ class Portfolio(Sujet):
     def get_donnees(self) -> dict:
         donnees = {}
         for ticker, quantite in self.titres.items():
-            price = yf.Ticker(ticker).fast_info['lastPrice']
+            t = yf.Ticker(ticker)
+            prix = t.fast_info['lastPrice']
+            ouverture = t.fast_info['open']
+
             donnees[ticker] = {
                 "quantite": quantite,
-                "prix": round(price, 2),
-                "valeur_totale": round(price * quantite, 2)
+                "prix": round(prix, 2),
+                "ouverture": round(ouverture, 2)
             }
         return donnees
